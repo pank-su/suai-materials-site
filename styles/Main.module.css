@@ -1,0 +1,27 @@
+.main{
+    margin: auto;
+    max-width: 500pt;
+}
+
+.icon{
+    display: inline-grid;
+}
+
+.icon img{
+    horiz-align: center;
+}
+
+.icon p{
+    background: transparent;
+    color: white;
+    width: 50px;
+
+    text-align: center;
+    overflow-wrap: break-word;
+}
+
+.selected.icon p{
+    background: darkblue;
+    color: white;
+    text-align: center;
+}

@@ -1,0 +1,15 @@
+:root{
+    height: 100vh;
+    background-image: url("../public/windows_xp.webp");
+    background-size: cover;
+}
+
+.close{
+    visibility: hidden;
+}
+
+/*.selected p{*/
+/*    background: darkblue;*/
+/*    color: white;*/
+/*    text-align: center;*/
+/*}*/
