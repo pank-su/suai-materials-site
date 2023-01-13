@@ -4,43 +4,46 @@ import "xp.css/dist/XP.css";
 import styles from "../styles/Main.module.css"
 import {useState} from "react";
 import Image from "next/image";
-import {element} from "prop-types";
+import Draggable from 'react-draggable';
 
 
-const inter = Inter({subsets: ['cyrillic']})
 
-var icons = [{id: 1, image: "/icon_icon.png", alt: "Биба", content: <p>Тест</p>, title: "Тестирование"}]
+
+var icons = [{id: 1, image: "/icon_icon.png", alt: "Биба", content: <p>Тест</p>, title: "Тестирование"}, {id: 1, image: "/icon_icon.png", alt: "Биба", content: <p>Тест</p>, title: "Тестирование"}]
+// Сделать несколько окон
+var windows = []
 
 
 function Window(title: String, Content: JSX.Element, p: (b: Boolean) => void) {
     useState()
 
-    return <div className="window">
-        <div className="title-bar">
-            <div className="title-bar-text">{title}</div>
-            <div className="title-bar-controls">
-                <button aria-label="Help"></button>
-                <button onClick={() => p(false)} aria-label="Close"></button>
+    return <Draggable bounds="html" handle=".handle">
+        <div className="window handle">
+            <div className="title-bar">
+                <div className="title-bar-text">{title}</div>
+                <div className="title-bar-controls">
+                    <button aria-label="Help"></button>
+                    <button onClick={() => p(false)} aria-label="Close"></button>
+                </div>
             </div>
-
+            <div className="window-body">
+                {Content}
+            </div>
         </div>
-        <div className="window-body">
-            {Content}
-        </div>
-    </div>
+    </Draggable>
 }
 
-function Icon(icon_id: number, image: JSX.Element, WindowChange: (title: String, content: JSX.Element) => void, selected: Boolean, setSelectedId: (id: number) => void) {
+function Icon(icon_id: number, WindowChange: (title: String, content: JSX.Element) => void, selected: Boolean, setSelectedId: (id: number) => void) {
 
-    return <div onClick={function () {
+    return <Draggable bounds="html" handle=".handle"><div onClick={function () {
         if (selected)
             WindowChange(icons.at(icon_id)!.title, icons.at(icon_id)!.content)
         else
             setSelectedId(icon_id)
     }} className={`${selected ? styles.selected : ''}` + " " + styles.icon}>
-        {image}
+        <Image className={"handle"} src={icons.at(icon_id)!.image} alt={icons.at(icon_id)!.title} width={50} height={50} />
         <p>{icons.at(icon_id)!.title}</p>
-    </div>
+    </div></Draggable>
 }
 
 export default function StartPage() {
@@ -75,10 +78,12 @@ export default function StartPage() {
             <div className={`${isWindowOpen ? 'open' : 'close'}` + " " + styles.main}>
                 {Window(titleWindow, contentWindow, (b: Boolean) => setIsOpenValue(b))}
             </div>
+            <div className={styles.icons}>
+                {icons.map((icon, index) => (Icon(index, updateWindow, index == selectedIcon, setSelectedId)
+                    )
+                )}
+            </div>
 
-            {icons.map((icon, index) => (Icon(index, <Image src={icon.image} alt={icon.alt} width={50} height={50}/>, updateWindow, index == selectedIcon, setSelectedId)
-                )
-            )}
         </main>
 
     </>
